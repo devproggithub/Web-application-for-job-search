@@ -1,0 +1,344 @@
+﻿@page "{id:int}"
+@model EmploiApp.Areas.Identity.Pages.Account.Manage.EditCVModel
+@{
+    ViewData["Title"] = "Modifier mon CV";
+}
+<h2>@ViewData["Title"]</h2>
+
+<form method="post" id="editCVForm">
+    <!-- Section 1 : Informations de base -->
+    <div class="mb-4">
+        <h4>Informations du CV</h4>
+        <div class="form-group">
+            <label asp-for="Input.Titre"></label>
+            <input asp-for="Input.Titre" class="form-control" />
+            <span asp-validation-for="Input.Titre" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Input.Description"></label>
+            <textarea asp-for="Input.Description" class="form-control"></textarea>
+            <span asp-validation-for="Input.Description" class="text-danger"></span>
+        </div>
+    </div>
+    <hr />
+
+    <!-- Section 2 : Diplômes -->
+    <div class="mb-4">
+        <h4>Diplômes</h4>
+        <div class="form-inline mb-2">
+            <select id="newDiplomeId" class="form-control mr-2">
+                <option value="">-- Sélectionner un Diplôme --</option>
+                @foreach (var d in Model.AvailableDiplomes)
+                {
+                    <option value="@d.Id">@d.NomDiplome</option>
+                }
+            </select>
+            <select id="newDiplomeLevel" class="form-control mr-2">
+                <option value="">-- Niveau --</option>
+                <option value="Niveau Bac">Niveau Bac</option>
+                <option value="Bac">Bac</option>
+                <option value="DUT/BTS">DUT/BTS/... (Bac+2)</option>
+                <option value="Licence">Licence/... (Bac+3)</option>
+                <option value="Master">Master/... (Bac+5)</option>
+                <option value="Ingenieur">Ingenieur (Bac+5)</option>
+                <option value="Doctorat">Doctorat (Bac+7)</option>
+                <!-- Ajoutez d'autres options si nécessaire -->
+            </select>
+            <input type="date" id="newDiplomeDate" class="form-control mr-2" />
+            <button type="button" class="btn btn-primary" id="addDiplomeBtn">Ajouter</button>
+        </div>
+        <table class="table table-bordered" id="diplomeTable">
+            <thead>
+                <tr>
+                    <th>Diplôme</th>
+                    <th>Date d'obtention</th>
+                    <th>Niveau</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.CV.DiplomeCVs)
+                {
+                    <tr data-diplomeid="@item.DiplomeId">
+                        <td>@item.Diplome.NomDiplome</td>
+                        <td>@item.DateObtentation.ToShortDateString()</td>
+                        <td>@item.Niveau</td>
+                        <td>
+                            <button type="button" class="btn btn-danger btn-sm removeDiplomeBtn">Supprimer</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <input type="hidden" asp-for="Input.DiplomesJson" id="DiplomesJson" />
+    </div>
+    <hr />
+
+    <!-- Section 3 : Compétences -->
+    <div class="mb-4">
+        <h4>Compétences</h4>
+        <div class="form-inline mb-2">
+            <select id="newCompetenceId" class="form-control mr-2">
+                <option value="">-- Sélectionner une Compétence --</option>
+                @foreach (var c in Model.AvailableCompetences)
+                {
+                    <option value="@c.Id">@c.NomCompetence</option>
+                }
+            </select>
+            <select id="newCompetenceLevel" class="form-control mr-2">
+                <option value="">-- Niveau --</option>
+                <option value="Débutant">Débutant</option>
+                <option value="Intermédiaire">Intermédiaire</option>
+                <option value="Avancé">Avancé</option>
+            </select>
+            <button type="button" class="btn btn-primary" id="addCompetenceBtn">Ajouter</button>
+        </div>
+        <table class="table table-bordered" id="competenceTable">
+            <thead>
+                <tr>
+                    <th>Compétence</th>
+                    <th>Niveau</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.CV.CompetenceCVs)
+                {
+                    <tr data-competenceid="@item.CompetenceId">
+                        <td>@item.Competence.NomCompetence</td>
+                        <td>@item.Niveau</td>
+                        <td>
+                            <button type="button" class="btn btn-danger btn-sm removeCompetenceBtn">Supprimer</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <input type="hidden" asp-for="Input.CompetencesJson" id="CompetencesJson" />
+    </div>
+    <hr />
+
+    <!-- Section 4 : Langues -->
+    <div class="mb-4">
+        <h4>Langues</h4>
+        <div class="form-inline mb-2">
+            <select id="newLangueId" class="form-control mr-2">
+                <option value="">-- Sélectionner une Langue --</option>
+                @foreach (var l in Model.AvailableLangues)
+                {
+                    <option value="@l.Id">@l.NomLangue</option>
+                }
+            </select>
+            <select id="newLangueLevel" class="form-control mr-2">
+                <option value="">-- Niveau --</option>
+                <option value="Moyen">Moyen</option>
+                <option value="Bon">Bon</option>
+                <option value="Professionnelle">Professionnelle</option>
+                <option value="Maternelle">Maternelle</option>
+
+
+            </select>
+            <button type="button" class="btn btn-primary" id="addLangueBtn">Ajouter</button>
+        </div>
+        <table class="table table-bordered" id="langueTable">
+            <thead>
+                <tr>
+                    <th>Langue</th>
+                    <th>Niveau</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.CV.LangueCVs)
+                {
+                    <tr data-langueid="@item.LangueId">
+                        <td>@item.Langue.NomLangue</td>
+                        <td>@item.Niveau</td>
+                        <td>
+                            <button type="button" class="btn btn-danger btn-sm removeLangueBtn">Supprimer</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <input type="hidden" asp-for="Input.LanguesJson" id="LanguesJson" />
+    </div>
+    <hr />
+
+    <!-- Section 5 : Expériences -->
+    <div class="mb-4">
+        <h4>Expériences</h4>
+        <div class="form-inline mb-2">
+            <input type="text" id="newExpPoste" class="form-control mr-2" placeholder="Poste" required />
+            <input type="text" id="newExpEntreprise" class="form-control mr-2" placeholder="Entreprise" required />
+            <input type="date" id="newExpDateDebut" class="form-control mr-2" required />
+            <input type="date" id="newExpDateFin" class="form-control mr-2" />
+            <input type="text" id="newExpDescription" class="form-control mr-2" placeholder="Description" />
+            <button type="button" class="btn btn-primary" id="addExperienceBtn">Ajouter</button>
+        </div>
+        <table class="table table-bordered" id="experienceTable">
+            <thead>
+                <tr>
+                    <th>Poste</th>
+                    <th>Entreprise</th>
+                    <th>Date début</th>
+                    <th>Date fin</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var exp in Model.CV.Experiences)
+                {
+                    <tr data-id="@exp.Id">
+                        <td>@exp.Poste</td>
+                        <td>@exp.Entreprise</td>
+                        <td>@exp.DateDebut.ToShortDateString()</td>
+                        <td>@exp.DateFin.ToShortDateString()</td>
+                        <td>@exp.Description</td>
+                        <td>
+                            <button type="button" class="btn btn-danger btn-sm removeExperienceBtn">Supprimer</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <input type="hidden" asp-for="Input.ExperiencesJson" id="ExperiencesJson" />
+    </div>
+
+    <hr />
+
+    <button type="submit" class="btn btn-success">Sauvegarder</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Section Diplômes
+            $("#addDiplomeBtn").click(function () {
+                var diplomeId = $("#newDiplomeId").val();
+                var diplomeText = $("#newDiplomeId option:selected").text();
+                var niveau = $("#newDiplomeLevel").val();
+                var dateObtention = $("#newDiplomeDate").val();
+                if (diplomeId && niveau && dateObtention) {
+                    var newRow = `<tr data-diplomeid="${diplomeId}">
+                        <td>${diplomeText}</td>
+                        <td>${dateObtention}</td>
+                        <td>${niveau}</td>
+                        <td><button type="button" class="btn btn-danger btn-sm removeDiplomeBtn">Supprimer</button></td>
+                    </tr>`;
+                    $("#diplomeTable tbody").append(newRow);
+                }
+            });
+            $(document).on("click", ".removeDiplomeBtn", function () {
+                $(this).closest("tr").remove();
+            });
+
+            // Section Compétences
+            $("#addCompetenceBtn").click(function () {
+                var competenceId = $("#newCompetenceId").val();
+                var competenceText = $("#newCompetenceId option:selected").text();
+                var niveau = $("#newCompetenceLevel").val();
+                if (competenceId && niveau) {
+                    var newRow = `<tr data-competenceid="${competenceId}">
+                        <td>${competenceText}</td>
+                        <td>${niveau}</td>
+                        <td><button type="button" class="btn btn-danger btn-sm removeCompetenceBtn">Supprimer</button></td>
+                    </tr>`;
+                    $("#competenceTable tbody").append(newRow);
+                }
+            });
+            $(document).on("click", ".removeCompetenceBtn", function () {
+                $(this).closest("tr").remove();
+            });
+
+            // Section Langues
+            $("#addLangueBtn").click(function () {
+                var langueId = $("#newLangueId").val();
+                var langueText = $("#newLangueId option:selected").text();
+                var niveau = $("#newLangueLevel").val();
+                if (langueId && niveau) {
+                    var newRow = `<tr data-langueid="${langueId}">
+                        <td>${langueText}</td>
+                        <td>${niveau}</td>
+                        <td><button type="button" class="btn btn-danger btn-sm removeLangueBtn">Supprimer</button></td>
+                    </tr>`;
+                    $("#langueTable tbody").append(newRow);
+                }
+            });
+            $(document).on("click", ".removeLangueBtn", function () {
+                $(this).closest("tr").remove();
+            });
+
+            // Section Expériences
+            $("#addExperienceBtn").click(function () {
+                var poste = $("#newExpPoste").val();
+                var entreprise = $("#newExpEntreprise").val();
+                var dateDebut = $("#newExpDateDebut").val();
+                var dateFin = $("#newExpDateFin").val();
+                var description = $("#newExpDescription").val();
+                if (poste && entreprise && dateDebut) {
+                    var newRow = `<tr>
+                        <td>${poste}</td>
+                        <td>${entreprise}</td>
+                        <td>${dateDebut}</td>
+                        <td>${dateFin}</td>
+                        <td>${description}</td>
+                        <td><button type="button" class="btn btn-danger btn-sm removeExperienceBtn">Supprimer</button></td>
+                    </tr>`;
+                    $("#experienceTable tbody").append(newRow);
+                }
+            });
+            $(document).on("click", ".removeExperienceBtn", function () {
+                $(this).closest("tr").remove();
+            });
+
+            // Avant soumission, collecter les données
+            $("#editCVForm").submit(function (e) {
+                // Diplômes
+                var diplomes = [];
+                $("#diplomeTable tbody tr").each(function () {
+                    var diplomeId = $(this).data("diplomeid");
+                    var dateObtention = $(this).find("td:nth-child(2)").text().trim();
+                    var niveau = $(this).find("td:nth-child(3)").text().trim();
+                    diplomes.push({ DiplomeId: diplomeId, DateObtention: dateObtention, Niveau: niveau });
+                });
+                $("#DiplomesJson").val(JSON.stringify(diplomes));
+
+                // Compétences
+                var competences = [];
+                $("#competenceTable tbody tr").each(function () {
+                    var competenceId = $(this).data("competenceid");
+                    var niveau = $(this).find("td:nth-child(2)").text().trim();
+                    competences.push({ CompetenceId: competenceId, Niveau: niveau });
+                });
+                $("#CompetencesJson").val(JSON.stringify(competences));
+
+                // Langues
+                var langues = [];
+                $("#langueTable tbody tr").each(function () {
+                    var langueId = $(this).data("langueid");
+                    var niveau = $(this).find("td:nth-child(2)").text().trim();
+                    langues.push({ LangueId: langueId, Niveau: niveau });
+                });
+                $("#LanguesJson").val(JSON.stringify(langues));
+
+                // Expériences
+                var experiences = [];
+                $("#experienceTable tbody tr").each(function () {
+                    var poste = $(this).find("td:nth-child(1)").text().trim();
+                    var entreprise = $(this).find("td:nth-child(2)").text().trim();
+                    var dateDebut = $(this).find("td:nth-child(3)").text().trim();
+                    var dateFin = $(this).find("td:nth-child(4)").text().trim();
+                    var description = $(this).find("td:nth-child(5)").text().trim();
+                    experiences.push({ Poste: poste, Entreprise: entreprise, DateDebut: dateDebut, DateFin: dateFin, Description: description });
+                });
+                $("#ExperiencesJson").val(JSON.stringify(experiences));
+            });
+        });
+    </script>
+}

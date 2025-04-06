@@ -1,0 +1,47 @@
+﻿@page "{id:int}"
+@model EmploiApp.Areas.Identity.Pages.Account.Manage.DetailsCVModel
+@{
+    ViewData["Title"] = "Détails du CV";
+}
+
+<h2>@Model.CV.Titre</h2>
+<p><strong>Description :</strong> @Model.CV.Description</p>
+<p><strong>Date de création :</strong> @Model.CV.DateCreation.ToShortDateString()</p>
+
+<h3>Diplômes</h3>
+<ul>
+    @foreach (var diplomeCV in Model.CV.DiplomeCVs)
+    {
+        <li>@diplomeCV.Diplome.NomDiplome : @diplomeCV.Niveau</li> 
+        <i>@diplomeCV.DateObtentation.ToShortDateString()</i>
+    }
+</ul>
+
+<h3>Compétences</h3>
+<ul>
+    @foreach (var competenceCV in Model.CV.CompetenceCVs)
+    {
+        <li>@competenceCV.Competence.NomCompetence : @competenceCV.Niveau</li>
+    }
+</ul>
+
+<h3>Langues</h3>
+<ul>
+    @foreach (var langueCV in Model.CV.LangueCVs)
+    {
+        <li>@langueCV.Langue.NomLangue (@langueCV.Niveau)</li>
+    }
+</ul>
+
+<h3>Expériences</h3>
+<ul>
+    @foreach (var experience in Model.CV.Experiences)
+    {
+        <li>
+            <strong>@experience.Poste</strong> chez @experience.Entreprise 
+            (@experience.DateDebut.ToShortDateString() - @experience.DateFin.ToShortDateString())
+        </li>
+    }
+</ul>
+
+<a asp-page="./ManageCV" class="btn btn-secondary">Retour</a>

@@ -1,0 +1,106 @@
+﻿@page
+@model EmploiApp.Areas.Identity.Pages.Account.Manage.ManageCVModel
+@{
+    ViewData["Title"] = "Gestion de mes CV";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<!-- Bouton pour ouvrir le modal d'ajout -->
+<button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addCVModal">
+    Ajouter un CV
+</button>
+
+<!-- Liste des CV -->
+<div id="cvList">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Titre</th>
+                <th>Date de création</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cv in Model.CVs)
+            {
+                <tr>
+                    <td>@cv.Titre</td>
+                    <td>@cv.DateCreation.ToShortDateString()</td>
+                    <td>@cv.Description</td>
+                    <td>
+                        <a asp-page="./DetailsCV" asp-route-id="@cv.Id" class="btn btn-info">Détails</a>
+                        <a asp-page="./EditCV" asp-route-id="@cv.Id" class="btn btn-warning">Modifier</a>
+                        <a asp-page="./DeleteCV" asp-route-id="@cv.Id" class="btn btn-danger">Supprimer</a>
+                        <a href="@cv.FichierPath" target="_blank" class="btn btn-secondary">Télécharger</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal pour ajouter un nouveau CV -->
+<div class="modal fade" id="addCVModal" tabindex="-1" role="dialog" aria-labelledby="addCVModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="addCVForm" method="post" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addCVModalLabel">Ajouter un CV</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="Titre">Titre</label>
+                        <input type="text" class="form-control" id="Titre" name="Titre" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="Description">Description</label>
+                        <textarea class="form-control" id="Description" name="Description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="FichierCV">Fichier CV</label>
+                        <input type="file" class="form-control" id="FichierCV" name="FichierCV"  />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Confirmer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#addCVForm").submit(function (e) {
+                e.preventDefault();
+                var formData = new FormData(this);
+
+                $.ajax({
+                    url: '@Url.Page("./ManageCV", "AddCV")',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (result) {
+                        $("#addCVModal").modal('hide');
+                        location.reload();
+                    },
+                    error: function () {
+                        alert("Une erreur s'est produite lors de l'ajout du CV.");
+                    }
+                });
+            });
+        });
+    </script>
+}

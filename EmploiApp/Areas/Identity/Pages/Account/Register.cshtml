@@ -1,0 +1,68 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Inscription";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3 class="mb-0">@ViewData["Title"]</h3>
+                </div>
+                <div class="card-body">
+                    <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="nom@example.com" />
+                            <label asp-for="Input.Email">Adresse e-mail</label>
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Password" class="form-control" type="password" autocomplete="new-password" aria-required="true" placeholder="Mot de passe" />
+                            <label asp-for="Input.Password">Mot de passe</label>
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.ConfirmPassword" class="form-control" type="password" autocomplete="new-password" aria-required="true" placeholder="Confirmez le mot de passe" />
+                            <label asp-for="Input.ConfirmPassword">Confirmation du mot de passe</label>
+                            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-floating mb-4">
+                            <select asp-for="Input.Role" class="form-select" aria-required="true">
+                                <option value="">-- Sélectionnez un rôle --</option>
+                                <option value="Candidat">Candidat</option>
+                                <option value="Recruteur">Recruteur</option>
+                            </select>
+                            <label asp-for="Input.Role">Rôle</label>
+                            <span asp-validation-for="Input.Role" class="text-danger"></span>
+                        </div>
+
+                        <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">
+                            <i class="fas fa-user-plus"></i> Créer un compte
+                        </button>
+                    </form>
+                </div>
+
+                <div class="card-footer text-center">
+                    <p class="mb-0">
+                        Vous avez déjà un compte ?
+                        <a asp-area="Identity" asp-page="/Account/Login">Se connecter</a>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+}

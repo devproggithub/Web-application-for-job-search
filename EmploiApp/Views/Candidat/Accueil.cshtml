@@ -1,0 +1,65 @@
+﻿@using EmploiApp.Models
+@model IEnumerable<EmploiApp.Models.OffreEmploi>
+
+
+@{
+    ViewData["Title"] = "Accueil Candidat - Offres d'Emploi";
+    var searchTerm = ViewBag.SearchTerm as string;
+    int? secteurId = ViewBag.SecteurId as int?;
+    var secteurs = ViewBag.Secteurs as IEnumerable<EmploiApp.Models.Secteur>;
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<!-- Zone de recherche -->
+<form method="get" asp-action="Accueil" asp-controller="Candidat" class="mb-4">
+    <div class="row">
+        <div class="col-md-4">
+            <input type="text" name="search" value="@searchTerm" class="form-control" placeholder="Rechercher une offre..." />
+        </div>
+        <div class="col-md-4">
+            <select name="secteurId" class="form-control">
+                <option value="">Tous les secteurs</option>
+                @foreach (var secteur in secteurs)
+                {
+                    <option value="@secteur.Id" selected="@(secteurId == secteur.Id ? "selected" : null)">
+                        @secteur.NomSecteur
+                    </option>
+                }
+            </select>
+
+        </div>
+        <div class="col-md-4">
+            <button type="submit" class="btn btn-primary">Rechercher</button>
+        </div>
+    </div>
+</form>
+
+<!-- Affichage des offres -->
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Titre</th>
+            <th>Secteur</th>
+            <th>Description</th>
+            <th>Date Publication</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var offre in Model)
+        {
+            <tr>
+                <td>@offre.TitreOffre</td>
+                <td>@(offre.Secteur != null ? offre.Secteur.NomSecteur : "N/A")</td>
+                <td>@offre.Description</td>
+                <td>@offre.DatePublication.ToShortDateString()</td>
+                <td>
+                    <a asp-action="Details" asp-controller="OffreEmploi" asp-route-id="@offre.Id" class="btn btn-info">
+                        Détails
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

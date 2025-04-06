@@ -1,0 +1,20 @@
+﻿@model Recruteur
+@{
+    ViewData["Title"] = "ViewCompleteRecruteur";
+}
+
+<h1>ViewCompleteRecruteur</h1>
+
+<form asp-action="CompleteCandidate" method="post">
+    <div class="form-group">
+        <label asp-for="Entreprise"></label>
+        <input asp-for="Entreprise" class="form-control" />
+        <span asp-validation-for="Entreprise" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Enregistrer</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

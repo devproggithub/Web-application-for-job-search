@@ -1,0 +1,58 @@
+﻿@model EmploiApp.Models.OffreEmploi
+@{
+    ViewData["Title"] = "Publier une offre";
+}
+
+<h2 class="mb-4">@ViewData["Title"]</h2>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="TitreOffre"></label>
+        <input asp-for="TitreOffre" class="form-control" />
+        <span asp-validation-for="TitreOffre" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <textarea asp-for="Description" class="form-control" rows="5"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Localisation"></label>
+        <input asp-for="Localisation" class="form-control" />
+        <span asp-validation-for="Localisation" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="TypeContrat"></label>
+        <select asp-for="TypeContrat" class="form-control">
+            <option value="">-- Sélectionner --</option>
+            <option>CDI</option>
+            <option>CDD</option>
+            <option>Stage</option>
+        </select>
+        <span asp-validation-for="TypeContrat" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SecteurId">Secteur</label>
+        <select asp-for="SecteurId" class="form-control" asp-items="ViewBag.Secteurs">
+            <option value="">-- Sélectionner un secteur --</option>
+        </select>
+        <span asp-validation-for="SecteurId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DateExpiration">Date d'expiration</label>
+        <input asp-for="DateExpiration" type="date" class="form-control" />
+        <span asp-validation-for="DateExpiration" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Publier l'offre</button>
+    <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,39 @@
+﻿@* Views/Recruteur/Edit.cshtml *@
+@model EmploiApp.Models.OffreEmploi
+@{
+    ViewData["Title"] = "Modifier l'offre";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label asp-for="TitreOffre"></label>
+        <input asp-for="TitreOffre" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Localisation"></label>
+        <input asp-for="Localisation" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="TypeContrat"></label>
+        <input asp-for="TypeContrat" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DateExpiration"></label>
+        <input asp-for="DateExpiration" type="date" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Enregistrer</button>
+    <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+</form>

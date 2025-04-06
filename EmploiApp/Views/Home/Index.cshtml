@@ -1,0 +1,76 @@
+﻿@using EmploiApp.Models
+@model HomeViewModel
+
+@{
+    ViewData["Title"] = "Home";
+
+}
+
+<div class="jumbotron">
+    <h1 class="display-4">Bienvenue sur notre plateforme de recrutement</h1>
+    <p class="lead">Trouvez l'emploi qui vous correspond ou le candidat idéal pour votre entreprise.</p>
+</div>
+<div class="row mb-4">
+    <div class="col-md-12">
+        <form method="get" asp-action="Index" class="card card-body">
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="keyword">Recherche par mot-clé</label>
+                        <input type="text" class="form-control" id="keyword" name="keyword" value="@Model.Keyword" placeholder="Titre, description, localisation...">
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="secteurId">Secteur</label>
+                        <select name="secteurId" class="form-control">
+                            <option value="">Tous les secteurs</option>
+                            @foreach (var secteur in Model.Secteurs)
+                            {
+                                <option value="@secteur.Id" selected="@(Model.SecteurId == secteur.Id ? "selected" : null)">
+                                    @secteur.NomSecteur
+                                </option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">Rechercher</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    @foreach (var offre in Model.Offres)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">@offre.TitreOffre</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        @(offre.Recruteur?.Entreprise ?? "Recruteur inconnu")
+                    </h6>
+                    <p class="card-text">@offre.Description.Truncate(100)</p>
+                    <div class="d-flex justify-content-between">
+                        <span class="badge badge-primary">@offre.TypeContrat</span>
+                        <span class="badge badge-info">@offre.Localisation</span>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a asp-controller="PublicOffreEmploi" asp-action="Details" asp-route-id="@offre.Id" class="btn btn-sm btn-outline-primary">Voir détails</a>
+                    <a asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@Url.Action("Details", "OffreEmploi", new { id = offre.Id })" class="btn btn-sm btn-primary">Postuler</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@if (!Model.Offres.Any())
+{
+    <div class="alert alert-info">
+        Aucune offre ne correspond à votre recherche.
+        <a asp-action="Index" class="alert-link">Réinitialiser la recherche</a>.
+    </div>
+}

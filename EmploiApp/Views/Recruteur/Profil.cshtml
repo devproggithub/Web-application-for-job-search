@@ -1,0 +1,31 @@
+﻿@* Views/Recruteur/Profil.cshtml *@
+@model EmploiApp.Models.Recruteur
+@{
+    ViewData["Title"] = "Mon Profil Recruteur";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">@TempData["Message"]</div>
+}
+
+<form asp-action="Profil" method="post">
+    <div class="form-group">
+        <label asp-for="Entreprise"></label>
+        <input asp-for="Entreprise" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Nom"></label>
+        <input asp-for="Nom" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Prenom"></label>
+        <input asp-for="Prenom" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-success">Enregistrer</button>
+</form>

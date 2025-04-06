@@ -1,0 +1,14 @@
+﻿@* Views/Recruteur/Delete.cshtml *@
+@model EmploiApp.Models.OffreEmploi
+@{
+    ViewData["Title"] = "Supprimer l'offre";
+}
+
+<h2>@ViewData["Title"]</h2>
+<p>Êtes-vous sûr de vouloir supprimer l'offre : <strong>@Model.TitreOffre</strong> ?</p>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Oui, supprimer</button>
+    <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+</form>

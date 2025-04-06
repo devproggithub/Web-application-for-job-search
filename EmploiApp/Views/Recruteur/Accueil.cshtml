@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = "Espace Recruteur";
+}
+
+<div class="container mt-4">
+    <div class="text-center mb-4">
+        <h2 class="text-primary">@ViewData["Title"]</h2>
+        <p class="text-muted">Bienvenue dans votre espace personnel.</p>
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-md-4">
+            <div class="card border-primary shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="card-title">📄 Mes Offres</h5>
+                    <p class="card-text">Gérez vos offres d'emploi : consultez, modifiez ou supprimez.</p>
+                    <a asp-action="Index" class="btn btn-outline-primary">Voir mes offres</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-success shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="card-title">➕ Nouvelle Offre</h5>
+                    <p class="card-text">Publiez une nouvelle offre d'emploi en quelques clics.</p>
+                    <a asp-action="Create" class="btn btn-outline-success">Publier une offre</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-info shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="card-title">👤 Mon Profil</h5>
+                    <p class="card-text">Modifiez vos informations personnelles et celles de l'entreprise.</p>
+                    <a asp-action="Profil" class="btn btn-outline-info">Modifier mon profil</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,43 @@
+﻿@model EmploiApp.Models.OffreEmploi
+@{
+    ViewData["Title"] = Model.TitreOffre;
+}
+
+<div class="container mt-4">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">@Model.TitreOffre</h3>
+            <h5 class="mb-0">@(Model.Recruteur?.Entreprise ?? "Recruteur inconnu")</h5>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <p><strong>Type de contrat :</strong> @Model.TypeContrat</p>
+                </div>
+                <div class="col-md-4">
+                    <p><strong>Localisation :</strong> @Model.Localisation</p>
+                </div>
+                <div class="col-md-4">
+                    <p><strong>Secteur :</strong> @Model.Secteur?.NomSecteur</p>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <h4>Description du poste</h4>
+                <p>@Model.Description</p>
+            </div>
+
+            <div>
+                <p><strong>Date de publication :</strong> @Model.DatePublication.ToShortDateString()</p>
+            </div>
+        </div>
+        <div class="card-footer">
+            <a asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@Url.Action("Details", "OffreEmploi", new { id = Model.Id })" class="btn btn-success float-right">
+                Se connecter pour postuler
+            </a>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">
+                Retour à la liste
+            </a>
+        </div>
+    </div>
+</div>

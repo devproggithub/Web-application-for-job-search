@@ -1,0 +1,59 @@
+﻿@model EmploiApp.Models.ViewModels.OffreDetailsViwModel
+
+@{
+    ViewData["Title"] = "Détails de l'Offre";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">@Model.Offre.TitreOffre</h3>
+        </div>
+        <div class="card-body">
+            <p><strong>Secteur :</strong> @Model.Offre.Secteur.NomSecteur</p>
+            <p><strong>Description :</strong> @Model.Offre.Description</p>
+            <p><strong>Localisation :</strong> @Model.Offre.Localisation</p>
+            <p><strong>Type de Contrat :</strong> @Model.Offre.TypeContrat</p>
+            <p><strong>Date de Publication :</strong> @Model.Offre.DatePublication.ToShortDateString()</p>
+            <p><strong>Date d'Expiration :</strong> @Model.Offre.DateExpiration.ToString()</p>
+
+            <!-- Bouton Postuler -->
+            <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#postulerModal">
+                Postuler
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Fenêtre modale pour la candidature -->
+<div class="modal fade" id="postulerModal" tabindex="-1" role="dialog" aria-labelledby="postulerModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="postulerModalLabel">Sélectionner un CV</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="post" asp-action="Postuler" asp-controller="OffreEmploi">
+                <div class="modal-body">
+                    <input type="hidden" name="idOffre" value="@Model.Offre.Id" />
+
+                    <div class="form-group">
+                        <label for="cvId">Choisissez un CV :</label>
+                        <select name="cvId" id="cvId" class="form-control" required>
+                            @foreach (var cv in Model.Cvs)
+                            {
+                                <option value="@cv.Id">@cv.Titre</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Confirmer</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
