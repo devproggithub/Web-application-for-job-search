@@ -472,6 +472,3 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - [Azure DevOps](https://docs.microsoft.com/en-us/azure/devops/)
 - [SQL Server](https://docs.microsoft.com/en-us/sql/sql-server/)
 
-## Support and Contact
-
-For questions and support, please open an issue in the GitHub repository or contact the maintainers at support@jobsearchapp.com.
